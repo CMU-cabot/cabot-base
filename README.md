@@ -1,10 +1,8 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-# CaBot Common
+# CaBot Base
 
-|Package|Description|
-|---|---|
-|[cabot_common](cabot_common)|common python script|
+This repository aims to build base docker images for the CaBot project
 
 # License
 
