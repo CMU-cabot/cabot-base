@@ -37,8 +37,8 @@ repositories:
     version: 72cb73eec26fd982b408cf7318faf8c36bb0b587
   docker/humble-custom/navigation2:
     type: git
-    url: https://github.com/ros-planning/navigation2
-    version: 1.1.18
+    url: https://github.com/CMU-cabot/navigation2.git
+    version: 1542baf1d7b6b900f55f2400f7149293f1956501
   docker/humble-custom/people:
     type: git
     url: https://github.com/wg-perception/people.git

@@ -82,8 +82,10 @@ repositories:
     version: ros2
   docker/humble-custom/navigation2:
     type: git
-    url: https://github.com/ros-planning/navigation2
-    version: humble
+    # url: https://github.com/ros-planning/navigation2
+    # version: humble
+    url: https://github.com/cmu-cabot/navigation2
+    version: humble-custom
 
   docker/opengl:
     type: git
