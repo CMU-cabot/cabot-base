@@ -18,6 +18,10 @@ variable "REGISTRY" {
   default = "cmucal"
 }
 
+variable "BUILDX_CACHE_DIR" {
+  default = "~/.cache/docker-buildx-mybuilder"
+}
+
 group "default" {
   targets = [
     "base",
@@ -41,6 +45,8 @@ FROM build-$TARGETARCH
 EOF
   platforms  = "${PLATFORMS}"
   tags       = [ "${REGISTRY}/${BASE_IMAGE}:base" ]
+  cache-from = ["type=local,src=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-base"]
+  cache-to   = ["type=local,dest=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-base,mode=max"]
   output     = [ "type=registry" ]
 }
 
@@ -56,6 +62,8 @@ target "ros-core" {
   contexts   = { "${REGISTRY}/${BASE_IMAGE}:base" = "target:base" }
   args       = { FROM_IMAGE = "${REGISTRY}/${BASE_IMAGE}:base" }
   tags       = [ "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-core" ]
+  cache-from = ["type=local,src=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-core"]
+  cache-to   = ["type=local,dest=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-core,mode=max"]
 }
 
 target "ros-base" {
@@ -65,6 +73,8 @@ target "ros-base" {
   contexts   = { "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-core" = "target:ros-core" }
   args       = { FROM_IMAGE = "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-core" }
   tags       = [ "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base" ]
+  cache-from = ["type=local,src=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-base"]
+  cache-to   = ["type=local,dest=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-base,mode=max"]
 }
 
 target "ros-desktop" {
@@ -74,6 +84,8 @@ target "ros-desktop" {
   contexts   = { "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base" = "target:ros-base" }
   args       = { FROM_IMAGE = "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base" }
   tags       = [ "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-desktop" ]
+  cache-from = ["type=local,src=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-desktop"]
+  cache-to   = ["type=local,dest=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-desktop,mode=max"]
 }
 
 target "ros-base-custom" {
@@ -83,6 +95,8 @@ target "ros-base-custom" {
   contexts   = { "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base" = "target:ros-base" }
   args       = { FROM_IMAGE = "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base" }
   tags       = [ "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base-custom" ]
+  cache-from = ["type=local,src=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-base-custom"]
+  cache-to   = ["type=local,dest=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-base-custom,mode=max"]
 }
 
 target "ros-base-custom-mesa" {
@@ -92,6 +106,8 @@ target "ros-base-custom-mesa" {
   contexts   = { "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base-custom" = "target:ros-base-custom" }
   args       = { FROM_IMAGE = "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base-custom" }
   tags       = [ "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-base-custom-mesa" ]
+  cache-from = ["type=local,src=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-base-custom-mesa"]
+  cache-to   = ["type=local,dest=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-base-custom-mesa,mode=max"]
 }
 
 target "ros-desktop-custom" {
@@ -101,6 +117,8 @@ target "ros-desktop-custom" {
   contexts   = { "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-desktop" = "target:ros-desktop" }
   args       = { FROM_IMAGE = "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-desktop" }
   tags       = [ "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-desktop-custom" ]
+  cache-from = ["type=local,src=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-desktop-custom"]
+  cache-to   = ["type=local,dest=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-desktop-custom,mode=max"]
 }
 
 target "ros-desktop-custom-mesa" {
@@ -111,4 +129,6 @@ target "ros-desktop-custom-mesa" {
   contexts   = { "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-desktop-custom" = "target:ros-desktop-custom" }
   args       = { FROM_IMAGE = "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-desktop-custom" }
   tags       = [ "${REGISTRY}/${BASE_IMAGE}:${ROS_DISTRO}-desktop-custom-mesa" ]
+  cache-from = ["type=local,src=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-desktop-custom-mesa"]
+  cache-to   = ["type=local,dest=${BUILDX_CACHE_DIR}/${BASE_IMAGE}-ros-desktop-custom-mesa,mode=max"]
 }

@@ -109,6 +109,20 @@ if [[ -z $(docker buildx ls | grep "mybuilder\*") ]]; then
     fi
 fi
 
+# setup buildx cache
+cache_dir=~/.cache/docker-buildx-mybuilder
+bake_json=$(docker buildx bake --print)
+readarray -t bake_targets < <(echo "$bake_json" | jq -r '.target | keys[]')
+for target in "${bake_targets[@]}"; do
+    target_cache_dir=$cache_dir/$base_name-$target
+    if [[ ! -d $target_cache_dir ]]; then
+        echo "create $target cache directory"
+        mkdir -p $target_cache_dir
+    else
+        echo "$target cache directory already exists"
+    fi
+done
+
 # replace ros Dockerfile FROM instruction to replace base image
 # this isn't good, but cannot find alternative
 if [[ -e ./docker/docker_images ]]; then
@@ -120,10 +134,11 @@ fi
 
 # bake
 export BASE_IMAGE=$base_name
+export BUILDX_CACHE_DIR=$cache_dir
 if [[ -n $platform ]]; then
-    com="docker buildx bake --set *.platform=\"$platform\" $@"
+    com="docker buildx bake --allow=fs=$cache_dir --set *.platform=\"$platform\" $@"
 else
-    com="docker buildx bake $@"
+    com="docker buildx bake --allow=fs=$cache_dir $@"
 fi
 echo $com
 eval $com
