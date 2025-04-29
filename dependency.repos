@@ -79,7 +79,7 @@ repositories:
   docker/humble-custom/bond_core:
     type: git
     url: https://github.com/ros/bond_core.git
-    version: ros2
+    version: 4.1.2
   docker/humble-custom/navigation2:
     type: git
     # url: https://github.com/ros-planning/navigation2
