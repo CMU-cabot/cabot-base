@@ -91,6 +91,9 @@ RUN mkdir -p ${ROS_ROOT}/src && \
 	launch_ros \
 	rosidl_runtime_py \
 	tf_transformations \
+	pcl_conversions \
+	pcl_msgs \
+	pcl_ros \
 	> ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
 	cat ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
 	vcs import src < ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
