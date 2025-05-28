@@ -6,6 +6,9 @@ ARG ROS_PKG=ros_base
 ENV ROS_DISTRO=humble
 ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
 
+# CMake 3.20+ is required to build ROS2
+ARG CMAKE_V=3.20.6
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /tmp
@@ -61,6 +64,11 @@ RUN python3 -m pip install -U \
 	pytest-repeat \
 	pytest-rerunfailures \
 	pytest
+
+# install cmake
+RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_V}/cmake-${CMAKE_V}-linux-aarch64.sh && \
+    sh cmake-${CMAKE_V}-linux-aarch64.sh --skip-license --prefix=/usr && \
+    rm cmake-${CMAKE_V}-linux-aarch64.sh
 
 # build ROS2
 RUN mkdir -p ${ROS_ROOT}/src && \
