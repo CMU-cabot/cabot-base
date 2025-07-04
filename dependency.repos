@@ -19,7 +19,7 @@ repositories:
     # TODO: use vcs import < dependency.repos --recursive if the number of submodules becomes large
     type: git
     url: https://github.com/HesaiTechnology/HesaiLidar_SDK_2.0
-    version: master
+    version: af2cff7c89b09b0a848f15fd0fb2778ac2add6d0
   docker/humble-custom/Lslidar_ROS2_driver:
     type: git
     url: https://github.com/Lslidar/Lslidar_ROS2_driver.git
