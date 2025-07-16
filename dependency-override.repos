@@ -7,7 +7,7 @@
 repositories:
   docker/humble-custom/bond_core:
     type: git
-    url: https://github.com/ros/bond_core.git
+    url: https://github.com/cmu-cabot/bond_core.git
     version: bond-core-debug
   docker/humble-custom/navigation2:
     type: git
