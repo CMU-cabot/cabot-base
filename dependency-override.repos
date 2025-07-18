@@ -1,0 +1,13 @@
+#
+# this file is used by -o option of setup-dependency.repos (alternative option of deprecated -s option)
+# it is intended to use only for multi-repos dependency updates
+# developer can commit this file, but it may cause conflict during merge
+#
+
+repositories:
+  docker/humble-custom/navigation2:
+    type: git
+    # url: https://github.com/ros-planning/navigation2
+    # version: humble
+    url: https://github.com/cmu-cabot/navigation2
+    version: humble-custom-nav
