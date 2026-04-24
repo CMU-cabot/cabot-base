@@ -1,4 +1,4 @@
-ARG FROM_IMAGE=nvcr.io/nvidia/l4t-base:r35.1.0
+ARG FROM_IMAGE=nvcr.io/nvidia/l4t-base:r36.2.0
 
 FROM $FROM_IMAGE as build
 
