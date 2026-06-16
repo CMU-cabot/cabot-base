@@ -8,6 +8,8 @@ ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
 
 # CMake 3.20+ is required to build ROS2
 ARG CMAKE_V=3.20.6
+# message_filters older than 4.3.17-1 is required for python3.8
+ARG MESSAGE_FILTERS_VERSION=4.3.16-1
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -108,6 +110,12 @@ RUN mkdir -p ${ROS_ROOT}/src && \
 	pcl_msgs \
 	pcl_ros \
 	> ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
+	# fix message_filters version
+	if ! grep -q "^[[:space:]]*local-name: message_filters$" ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall; then \
+		echo "ERROR: message_filters entry not found in ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall" >&2; \
+		exit 1; \
+	fi && \
+	sed -i "/^[[:space:]]*local-name: message_filters$/,/^- git:$/ s#version:.*#version: release/${ROS_DISTRO}/message_filters/${MESSAGE_FILTERS_VERSION}#" ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
 	cat ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
 	vcs import src < ros2.${ROS_DISTRO}.${ROS_PKG}.rosinstall && \
 	# https://github.com/dusty-nv/jetson-containers/issues/181
