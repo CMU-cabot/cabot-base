@@ -8,8 +8,8 @@ ENV ROS_ROOT=/opt/ros/${ROS_DISTRO}
 
 # CMake 3.20+ is required to build ROS2
 ARG CMAKE_V=3.20.6
-# message_filters older than 4.3.18-1 is required for python3.8
-ARG MESSAGE_FILTERS_VERSION=4.3.17-1
+# message_filters older than 4.3.17-1 is required for python3.8
+ARG MESSAGE_FILTERS_VERSION=4.3.16-1
 
 ENV DEBIAN_FRONTEND=noninteractive
 
