@@ -1,4 +1,4 @@
-ARG FROM_IMAGE=nvcr.io/nvidia/l4t-base:r36.2.0
+ARG FROM_IMAGE=nvcr.io/nvidia/l4t-base:r36.4.3
 
 FROM $FROM_IMAGE as build
 
@@ -13,10 +13,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /tmp
 
+RUN apt-get update && \
+	apt-get install -y --no-install-recommends \
+	locales \
+	&& rm -rf /var/lib/apt/lists/* \
+	&& apt-get clean
 RUN locale-gen en_US en_US.UTF-8 && update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
 ENV LANG=en_US.UTF-8
-
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 RUN apt-get update && \
 	apt-get install -y --no-install-recommends \
@@ -44,6 +47,7 @@ RUN apt-get update && \
 	libpython3-dev \
 	libasio-dev \
 	libtinyxml2-dev \
+	python3 \
 	python3-colcon-common-extensions \
 	python3-flake8 \
 	python3-numpy \
@@ -55,6 +59,8 @@ RUN apt-get update && \
 	python3-vcstool \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& apt-get clean
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 
 RUN python3 -m pip install -U \
 	argcomplete \
@@ -142,4 +148,3 @@ ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 COPY ./ros_entrypoint.sh /ros_entrypoint.sh
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
-
